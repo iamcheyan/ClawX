@@ -743,7 +743,7 @@ def load_llm_providers():
                             "provider_key": name,
                             "name": "qwen-portal (gateway)",
                             "base_url": "http://127.0.0.1:18789/v1",
-                            "api_key": "openclaw-secure-login",
+                            "api_key": os.environ.get("OPENCLAW_GATEWAY_KEY", ""),
                             "model": mid,
                             "method": "api"
                         })
