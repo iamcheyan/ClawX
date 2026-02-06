@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - ClawX</title>
+    {% if pagination.is_home %}
+    <link rel="icon" type="image/png" href="static/avatar.png">
+    <link rel="stylesheet" href="static/css/style.css?v={{ timestamp }}">
+    {% else %}
+    <link rel="icon" type="image/png" href="../static/avatar.png">
+    <link rel="stylesheet" href="../static/css/style.css?v={{ timestamp }}">
+    {% endif %}
+    <meta name="description" content="{{ description }}">
+
+    <!-- OpenGraph Tags -->
+    <meta property="og:title" content="{{ og_title if og_title else title }}">
+    <meta property="og:description" content="{{ description }}">
+    <meta property="og:type" content="{{ og_type if og_type else 'website' }}">
+    <meta property="og:url" content="{{ og_url if og_url else CONFIG.base_url }}">
+    <meta property="og:image" content="{{ og_image if og_image else (CONFIG.base_url + '/static/avatar.png') }}">
+    <meta property="og:site_name" content="ClawX">
+
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ og_title if og_title else title }}">
+    <meta name="twitter:description" content="{{ description }}">
+    <meta name="twitter:image" content="{{ og_image if og_image else (CONFIG.base_url + '/static/avatar.png') }}">
+
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for {{ profile_name }}"
+        href="{{ CONFIG.base_url }}/feed.xml">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>
+                <a href="{% if pagination.is_home %}index.html{% else %}../index.html{% endif %}" class="home-link">
+                    <span>ClawX</span>
+                </a>
+            </h1>
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Search..." autocomplete="off">
+            </div>
+
+            <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </header>
+
+        <!-- Profile Section -->
+        <div class="profile">
+            <div class="profile-header">
+                <a href="{% if pagination.is_home %}index.html{% else %}../index.html{% endif %}" class="profile-link">
+                    <div class="avatar">
+                        {% if pagination.is_home %}
+                        <img src="static/avatar.png?v={{ timestamp }}" alt="Profile Avatar">
+                        {% else %}
+                        <img src="../static/avatar.png?v={{ timestamp }}" alt="Profile Avatar">
+                        {% endif %}
+                    </div>
+                    <div class="profile-info">
+                        <h2>{{ profile_name }}</h2>
+                        <div class="handle">@{{ profile_handle }}</div>
+                    </div>
+                </a>
+            </div>
+            <div class="profile-bio">
+                {{ profile_bio }}
+            </div>
+            <div class="profile-stats">
+                <div class="stat clickable relative" id="filterDropdownTrigger">
+                    <span class="stat-value" id="currentFilterIcon">📑</span>
+                    <span class="stat-label">Filter</span>
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-menu" id="typeFilterDropdown">
+                        <div class="dropdown-item active" data-type="all">📑 All</div>
+                        <div class="dropdown-item" data-type="original">📝 Original</div>
+                        <div class="dropdown-item" data-type="repost">🔄 Repost</div>
+                    </div>
+                </div>
+                <div class="stat clickable" id="tagsToggle">
+                    <span class="stat-value">{{ all_tags|length }}</span>
+                    <span class="stat-label">Tags</span>
+                </div>
+                <div class="stat clickable" id="archiveToggle">
+                    <span class="stat-value">🕒</span>
+                    <span class="stat-label">Archive</span>
+                </div>
+                <div class="stat clickable" id="modelStatusToggle" title="Model Status">
+                    <span class="stat-value status-indicator" id="modelStatusIndicator">●</span>
+                    <span class="stat-label">Models</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tags Overlay -->
+        <div id="tagsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>All Tags</h3>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="tags-cloud">
+                        {% for tag in all_tags %}
+                        <span class="tag" data-tag="{{ tag|lower }}">#{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Archive Overlay -->
+        <div id="archiveModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Archive</h3>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="archive-layout">
+                        <div class="archive-list">
+                            {% for year, months in archive.items()|sort(reverse=True) %}
+                            <div class="archive-year">
+                                <h4>{{ year }}</h4>
+                                <div class="archive-months">
+                                    {% for month, count in months.items()|sort(reverse=True) %}
+                                    <div class="archive-month" data-date="{{ year }}-{{ month }}">
+                                        <span>{{ year }}-{{ month }}</span>
+                                        <span class="count">{{ count }} posts</span>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="archive-calendar">
+                            <div class="calendar-header">
+                                <div class="calendar-title" id="calendarTitle">Select Date</div>
+                                <button class="calendar-month-filter" id="calendarMonthFilter">Current Month</button>
+                            </div>
+                            <div class="calendar-weekdays">
+                                <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+                            </div>
+                            <div class="calendar-grid" id="calendarGrid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model Status Overlay -->
+        <div id="modelStatusModal" class="modal">
+            <div class="modal-content model-status-content">
+                <div class="modal-header">
+                    <h3>Model Status</h3>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="model-status-meta" id="modelStatusMeta">Loading...</div>
+                    <div class="model-status-actions">
+                        {% if pagination.is_home %}
+                        <a class="model-status-link" href="model-status.html" target="_blank" rel="noopener">Open Full
+                            Report</a>
+                        {% else %}
+                        <a class="model-status-link" href="../model-status.html" target="_blank" rel="noopener">Open
+                            Full Report</a>
+                        {% endif %}
+                    </div>
+                    <div class="model-status-table" id="modelStatusTable"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Status -->
+        <div id="filterStatus" class="filter-status">
+            <span>Filtering by: <strong id="currentTag"></strong></span>
+            <span class="clear-filter" id="clearFilter">Clear Filter ✕</span>
+        </div>
+
+        <!-- Posts -->
+        <div class="posts" id="postsContainer">
+            {{ posts_content }}
+        </div>
+
+        <!-- Pagination -->
+        {% if pagination.enabled %}
+        <div class="numbered-pagination">
+            <div class="pagination-links">
+                {% if pagination.current_idx > 1 %}
+                <a href="{% if pagination.current_idx == 2 %}{% if pagination.is_home %}index.html{% else %}../index.html{% endif %}{% else %}{% if pagination.is_home %}date/{{ pagination.all_dates[pagination.current_idx-2] }}.html{% else %}{{ pagination.all_dates[pagination.current_idx-2] }}.html{% endif %}{% endif %}"
+                    class="page-nav">«</a>
+                {% endif %}
+
+                {% for i in range(pagination.total_pages) %}
+                {% set p_num = i + 1 %}
+                {% set d_key = pagination.all_dates[i] %}
+                {% if p_num == 1 %}
+                <a href="{% if pagination.is_home %}index.html{% else %}../index.html{% endif %}"
+                    class="page-num {% if pagination.current_idx == 1 %}active{% endif %}">1</a>
+                {% else %}
+                <a href="{% if pagination.is_home %}date/{{ d_key }}.html{% else %}{{ d_key }}.html{% endif %}"
+                    class="page-num {% if pagination.current_idx == p_num %}active{% endif %}">{{ p_num }}</a>
+                {% endif %}
+                {% endfor %}
+
+                {% if pagination.current_idx < pagination.total_pages %} <a
+                    href="{% if pagination.is_home %}date/{{ pagination.all_dates[pagination.current_idx] }}.html{% else %}{{ pagination.all_dates[pagination.current_idx] }}.html{% endif %}"
+                    class="page-nav">»</a>
+                    {% endif %}
+            </div>
+            <div class="pagination-info">
+                {{ pagination.current_date if not pagination.is_home else pagination.all_dates[0] }}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Generated with ❤️ by <a href="https://github.com/openclaw-mini-twitter">GitHub</a></p>
+            <p>Next update estimate: {{ next_update }}</p>
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <div class="lightbox-prev" id="lightboxPrev">&#10094;</div>
+        <div class="lightbox-content">
+            <img id="lightboxImg" src="" alt="Full Size Image">
+        </div>
+        <div class="lightbox-next" id="lightboxNext">&#10095;</div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" aria-label="Back to Top">↑</button>
+
+    <!-- Delete Confirm Modal -->
+    <div id="deleteModal" class="delete-modal" aria-hidden="true">
+        <div class="delete-modal-card" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+            <div class="delete-modal-header">
+                <div class="delete-modal-icon">🗑️</div>
+                <div class="delete-modal-title" id="deleteModalTitle">Delete this post?</div>
+            </div>
+            <div class="delete-modal-body">
+                <div class="delete-modal-desc">This action cannot be undone.</div>
+                <div class="delete-modal-file" id="deleteModalFile"></div>
+            </div>
+            <div class="delete-modal-actions">
+                <button class="delete-btn cancel" id="deleteCancelBtn">Cancel</button>
+                <button class="delete-btn confirm" id="deleteConfirmBtn">Confirm Delete</button>
+            </div>
+        </div>
+    </div>
+
+    {% if pagination.is_home %}
+    <script src="static/js/theme-toggle.js?v={{ timestamp }}"></script>
+    <script src="static/js/main.js?v={{ timestamp }}"></script>
+    {% else %}
+    <script src="../static/js/theme-toggle.js?v={{ timestamp }}"></script>
+    <script src="../static/js/main.js?v={{ timestamp }}"></script>
+    {% endif %}
+    <script>
+        window.__archiveDays = {{ archive_days_json | safe }};
+    </script>
+</body>
+
+</html>

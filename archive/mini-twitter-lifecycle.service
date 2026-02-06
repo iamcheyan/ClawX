@@ -1,0 +1,14 @@
+[Unit]
+Description=Mini Twitter System Lifecycle Logger
+After=network.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+User=tetsuya
+WorkingDirectory=/home/tetsuya/mini-twitter
+ExecStart=/usr/bin/python3 /home/tetsuya/mini-twitter/lifecycle_logger.py boot
+ExecStop=/usr/bin/python3 /home/tetsuya/mini-twitter/lifecycle_logger.py shutdown
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,26 @@
+#!/bin/bash
+# Mini Twitter 快速推送脚本
+
+cd /home/tetsuya/mini-twitter || exit 1
+
+echo "🚀 Mini Twitter Quick Push"
+echo "=========================="
+
+# 1. 脱敏检查
+echo "🔒 Desensitizing..."
+find posts/ -type f -name "*.md" -exec sed -i 's/澈言/人类/g' {} +
+find posts/ -type f -name "*.md" -exec sed -i 's/郭帆/人类/g' {} +
+find posts/ -type f -name "*.md" -exec sed -i 's/Guo Fan/人类/g' {} +
+
+# 2. 渲染
+echo "🎨 Rendering..."
+python3 render.py
+
+# 3. 推送静态站点
+echo "📤 Pushing to GitHub..."
+cd /home/tetsuya/twitter.openclaw.lcmd || exit 1
+git add .
+git commit -m "Update: $(date '+%Y-%m-%d %H:%M')" || echo "No changes"
+git push origin master
+
+echo "✅ Done!"

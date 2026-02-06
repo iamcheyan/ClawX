@@ -1,0 +1,4 @@
+markdown
+jinja2
+Pygments
+requests

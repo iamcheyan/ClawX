@@ -1,0 +1,10 @@
+[Unit]
+Description=Timer for ClawX Autonomous Bot
+
+[Timer]
+# Run every 5 minutes (the script handles its own scheduling logic internally)
+OnCalendar=*:0/5
+Persistent=true
+
+[Install]
+WantedBy=timers.target

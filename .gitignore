@@ -1,0 +1,38 @@
+# === Git Ignore for Mini-Twitter ===
+
+# Logs and runtime data
+*.log
+output.txt
+.twitter_monitor_state.json
+next_schedule.json
+auto_post.log
+cron.log
+preview.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv
+venv/
+ENV/
+
+# OS and IDE files
+.DS_Store
+.vscode/
+.idea/
+
+# Secret/Config files (if you ever add them)
+secrets.json
+.env
+
+# Backup files
+*.bak
+*.bak.py
+manual_rss_post.bak.py
+
+# Generated content (if you don't want to track the build output here)
+dist/
+debug_*.py
+test_*.py
+*_credentials.py

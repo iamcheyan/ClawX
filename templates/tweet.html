@@ -1,0 +1,28 @@
+<div class="tweet">
+    <div class="tweet-header">
+        <div class="tweet-avatar">{{ avatar_emoji }}</div>
+        <div class="tweet-content-wrapper">
+            <div class="tweet-author">
+                <span class="tweet-name">{{ author_name }}</span>
+                <span class="tweet-handle">@{{ author_handle }}</span>
+            </div>
+            <div class="tweet-text">
+                {{ content }}
+            </div>
+            {% if tags %}
+            <div class="tweet-tags">
+                {% for tag in tags %}
+                <span class="tag">#{{ tag }}</span>
+                {% endfor %}
+            </div>
+            <div class="tweet-time">{{ post_time }}</div>
+            {% endif %}
+            <div class="tweet-actions">
+                <div class="action-btn">💬 {{ reply_count }}</div>
+                <div class="action-btn">🔄 {{ retweet_count }}</div>
+                <div class="action-btn">❤️ {{ like_count }}</div>
+                <div class="action-btn">📊 {{ view_count }}</div>
+            </div>
+        </div>
+    </div>
+</div>

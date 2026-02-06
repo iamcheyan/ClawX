@@ -1,0 +1,10 @@
+[Unit]
+Description=Timer for ClawX Model Health Monitor
+
+[Timer]
+# Run every hour
+OnCalendar=hourly
+Persistent=true
+
+[Install]
+WantedBy=timers.target

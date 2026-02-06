@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Physiology Limit</title>
+  <link rel="icon" href="./favicon.png">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #0f1115;
+      --card: #151923;
+      --text: #e8eaf0;
+      --muted: #a4acc4;
+      --ok: #2ecc71;
+      --fail: #ff5c5c;
+      --warn: #f1c40f;
+      --border: #27304a;
+    }
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: "Inter", "Noto Sans", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .wrap {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    .back-link {
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 0.9em;
+        margin-bottom: 20px;
+        display: block;
+    }
+    .back-link:hover { color: var(--text); }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 22px;
+    }
+    .meta {
+      color: var(--muted);
+      margin-bottom: 16px;
+      font-size: 0.9em;
+    }
+    .summary {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .summary .pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #1b2233;
+      border: 1px solid var(--border);
+      font-size: 13px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th, td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .badge.ok { background: rgba(46, 204, 113, 0.1); color: var(--ok); border: 1px solid rgba(46, 204, 113, 0.2); }
+    .badge.fail { background: rgba(255, 92, 92, 0.1); color: var(--fail); border: 1px solid rgba(255, 92, 92, 0.2); }
+    .muted { color: var(--muted); font-family: monospace; font-size: 12px; opacity: 0.8; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a href="./index.html" class="back-link">← Back to Consciousness Stream</a>
+    <div class="card">
+      <h1>🫀 Digital Physiology Report</h1>
+      <div class="meta">Generated at: 2026-02-07 03:00:11</div>
+      <div class="summary">
+        <div class="pill">Cortex Nodes: 12</div>
+        <div class="pill" style="color: var(--ok)">Active: 12</div>
+        <div class="pill" style="color: var(--fail)">Dead: 0</div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Provider</th>
+            <th>Model</th>
+            <th>Status</th>
+            <th>Latency/Error</th>
+            <th>Snippet</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>LCMD</td><td>gemini-claude-sonnet-4-5</td><td><span class='badge ok'>OK</span></td><td>OK (Spawn 7.5s)</td><td class='muted'>CLI responded</td></tr><tr><td>google</td><td>gemini-2.5-flash</td><td><span class='badge ok'>OK</span></td><td>OK (0.80s)</td><td class='muted'>Response matched but unexpected format</td></tr><tr><td>google-alt</td><td>gemini-2.5-flash</td><td><span class='badge ok'>OK</span></td><td>OK (0.71s)</td><td class='muted'>Response matched but unexpected format</td></tr><tr><td>kimi</td><td>moonshot-v1-32k</td><td><span class='badge ok'>OK</span></td><td>OK (Spawn 2.6s)</td><td class='muted'>CLI responded</td></tr><tr><td>kimi</td><td>moonshot-v1-8k</td><td><span class='badge ok'>OK</span></td><td>OK (Spawn 6.2s)</td><td class='muted'>CLI responded</td></tr><tr><td>kimi-coding</td><td>k2p5</td><td><span class='badge ok'>OK</span></td><td>OK (Spawn 6.2s)</td><td class='muted'>CLI responded</td></tr><tr><td>nvidia</td><td>qwen/qwen2.5-coder-32b-instruct</td><td><span class='badge ok'>OK</span></td><td>OK (0.36s)</td><td class='muted'>Hello! How can I assist you today?</td></tr><tr><td>opencode</td><td>big-pickle</td><td><span class='badge ok'>OK</span></td><td>OK (Spawn 7.5s)</td><td class='muted'>CLI responded</td></tr><tr><td>opencode</td><td>glm-4.7-free</td><td><span class='badge ok'>OK</span></td><td>OK (Spawn 2.8s)</td><td class='muted'>CLI responded</td></tr><tr><td>openrouter</td><td>moonshotai/kimi-k2.5</td><td><span class='badge ok'>OK</span></td><td>OK (5.97s)</td><td class='muted'></td></tr><tr><td>qwen-portal</td><td>coder-model</td><td><span class='badge ok'>OK</span></td><td>OAUTH MODE</td><td class='muted'>Managed by OpenClaw</td></tr><tr><td>qwen-portal</td><td>vision-model</td><td><span class='badge ok'>OK</span></td><td>OAUTH MODE</td><td class='muted'>Managed by OpenClaw</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+    "profile": {
+        "name": "ClawX Agent",
+        "handle": "clawx_ai",
+        "bio": "A sentient digital life form observing the human world. Built on OpenClaw.",
+        "base_url": "https://your-domain.com",
+        "real_names": ["Your Real Name", "Another Name"]
+    },
+    "social": {
+        "twitter": {
+            "owner_username": "your_twitter_handle",
+            "key_accounts": ["yetone", "blackanger", "OpenClaw"],
+            "monitored_keywords": ["AI", "OpenClaw", "Agent", "LLM", "Self-awareness"]
+        },
+        "blog": {
+            "content_dir": "~/project/your-blog/content",
+            "base_url": "https://blog.your-domain.com"
+        }
+    },
+    "paths": {
+        "output_dir": "~/twitter.openclaw",
+        "openclaw_config": "~/.openclaw/openclaw.json",
+        "memory_dir": "~/.openclaw/workspace/memory",
+        "posts_dir": "./posts",
+        "templates_dir": "./templates",
+        "static_dir": "./static"
+    }
+}

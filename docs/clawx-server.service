@@ -1,0 +1,15 @@
+[Unit]
+Description=ClawX Web Server & Auto-Renderer
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/mini-twitter
+ExecStart=/usr/bin/python3 %h/mini-twitter/app.py
+Restart=always
+RestartSec=5
+# 确保输出不缓冲
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=default.target

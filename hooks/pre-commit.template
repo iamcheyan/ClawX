@@ -1,0 +1,104 @@
+#!/bin/bash
+# Pre-commit hook to prevent committing secrets
+
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+echo "🔍 Scanning for secrets before commit..."
+
+# 定义敏感信息的正则表达式模式
+PATTERNS=(
+    # API Keys
+    "sk-[a-zA-Z0-9]{20,}"                    # OpenAI/OpenRouter style keys
+    "sk-or-v1-[a-f0-9]{64}"                  # OpenRouter specific
+    "['\"]?api[_-]?key['\"]?\s*[:=]\s*['\"][^'\"]{10,}['\"]"  # api_key = "..."
+    
+    # Tokens
+    "['\"]?auth[_-]?token['\"]?\s*[:=]\s*['\"][a-f0-9]{40,}['\"]"  # auth_token
+    "['\"]?access[_-]?token['\"]?\s*[:=]\s*['\"][^'\"]{20,}['\"]"  # access_token
+    "Bearer\s+[A-Za-z0-9\-\._~\+\/]+=*"      # Bearer tokens
+    
+    # Twitter/X specific
+    "['\"]?CT0['\"]?\s*[:=]\s*['\"][a-f0-9]{100,}['\"]"  # Twitter CT0 cookie
+    "['\"]?AUTH_TOKEN['\"]?\s*[:=]\s*['\"][a-f0-9]{40,}['\"]"  # Twitter auth token
+    
+    # Generic secrets
+    "['\"]?password['\"]?\s*[:=]\s*['\"][^'\"]{6,}['\"]"  # password = "..."
+    "['\"]?secret['\"]?\s*[:=]\s*['\"][^'\"]{10,}['\"]"   # secret = "..."
+    
+    # AWS
+    "AKIA[0-9A-Z]{16}"                       # AWS Access Key
+    
+    # Private keys
+    "-----BEGIN (RSA |DSA )?PRIVATE KEY-----"  # SSH/PEM keys
+    
+    # Google API
+    "AIza[0-9A-Za-z\-_]{35}"                 # Google API Key
+)
+
+# 获取所有待提交的文件
+FILES=$(git diff --cached --name-only --diff-filter=ACM)
+
+FOUND_SECRETS=0
+
+for FILE in $FILES; do
+    # 跳过二进制文件、特定目录和文档文件
+    if [[ "$FILE" == *".git/"* ]] || \
+       [[ "$FILE" == *"node_modules/"* ]] || \
+       [[ "$FILE" == *".pyc" ]] || \
+       [[ "$FILE" == *"README"* ]] || \
+       [[ "$FILE" == *"hooks/"* ]] || \
+       [[ "$FILE" == *".template"* ]]; then
+        continue
+    fi
+    
+    # 检查文件是否存在（可能已被删除）
+    if [ ! -f "$FILE" ]; then
+        continue
+    fi
+    
+    # 对每个模式进行检查
+    for PATTERN in "${PATTERNS[@]}"; do
+        MATCHES=$(grep -nE "$PATTERN" "$FILE" 2>/dev/null)
+        
+        if [ -n "$MATCHES" ]; then
+            if [ $FOUND_SECRETS -eq 0 ]; then
+                echo -e "${RED}❌ COMMIT BLOCKED: Potential secrets detected!${NC}"
+                echo ""
+            fi
+            
+            echo -e "${YELLOW}File: $FILE${NC}"
+            echo "$MATCHES" | while IFS= read -r line; do
+                LINE_NUM=$(echo "$line" | cut -d: -f1)
+                CONTENT=$(echo "$line" | cut -d: -f2-)
+                # 部分遮蔽敏感内容
+                MASKED=$(echo "$CONTENT" | sed -E 's/([a-zA-Z0-9]{4})[a-zA-Z0-9]{10,}([a-zA-Z0-9]{4})/\1***REDACTED***\2/g')
+                echo -e "  Line ${LINE_NUM}: ${MASKED}"
+            done
+            echo ""
+            
+            FOUND_SECRETS=1
+        fi
+    done
+done
+
+if [ $FOUND_SECRETS -eq 1 ]; then
+    echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${RED}🚨 COMMIT REJECTED${NC}"
+    echo ""
+    echo "Detected potential secrets in your commit."
+    echo ""
+    echo "Please:"
+    echo "  1. Remove the secrets from the files"
+    echo "  2. Use environment variables instead"
+    echo "  3. Add sensitive files to .gitignore"
+    echo ""
+    echo "To bypass this check (NOT recommended):"
+    echo "  git commit --no-verify"
+    echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    exit 1
+fi
+
+echo "✅ No secrets detected. Proceeding with commit."
+exit 0
