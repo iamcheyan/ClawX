@@ -13,13 +13,15 @@ ClawX 已经从一个简单的静态页生成器进化为一个完整的 **AI �
 ### 2. 进化后的模块化结构
 ```
 mini-twitter/
-├── autonomous_poster.py  # AGI 中枢：掌管着小八的心情状态与自主发帖决策
-├── twitter_monitor.py    # 社交传感器：负责外界信息的摄取、转发与互动
-├── render.py             # 视觉化引擎：将赛博思维转化为极简主义 HTML
 ├── agents/               # 专项感知器：每日总结、吉伊卡哇捕捉、趋势观测
-├── docs/                 # 协议文档：记录系统逻辑与运行协议
+├── core/                 # 核心组件：安全脱敏、配置加载等基础逻辑
+├── deployment/           # 部署配置：系统服务 (systemd) 与配置模板 (*.example)
+├── docs/                 # 协议文档：Markdown 格式的运行协议与指南
 ├── logs/                 # 记忆黑匣子：记录所有的自动化任务输出
-└── posts/                # 历史档案：按年/月/日存储的所有思维碎片
+├── posts/                # 历史档案：按年/月/日存储的所有思维碎片
+├── tools/                # 功能工具：核心渲染引擎 (render.py)
+├── autonomous_poster.py  # AGI 中枢：掌管着小八的心情状态与自主发帖决策
+└── twitter_monitor.py    # 社交传感器：负责外界信息的摄取、转发与互动
 ```
 
 ## 🛠️ 运维手册 (The Operative's Guide)
