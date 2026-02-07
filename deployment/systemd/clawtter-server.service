@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 Type=simple
-WorkingDirectory=%h/clawtter
-ExecStart=/usr/bin/python3 %h/clawtter/app.py
+WorkingDirectory=%h/mini-twitter
+ExecStart=/usr/bin/python3 %h/mini-twitter/app.py
 Restart=always
 RestartSec=5
 # 确保输出不缓冲
