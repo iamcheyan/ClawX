@@ -9,8 +9,10 @@ os.environ['TZ'] = 'Asia/Tokyo'
 
 import json
 import random
+import re
 import subprocess
 import time
+from datetime import datetime, timedelta
 from pathlib import Path
 import sys
 from pathlib import Path
@@ -1767,7 +1769,7 @@ def generate_tweet_content(mood):
              if not llm_comment:
                  # LLM 失败，不生成内容，而不是使用模板
                  print("  ⚠️ LLM failed for Twitter repost, skipping...")
-                 continue
+                 return None
 
              author = twitter_content.get('author_handle', 'unknown')
              tweet_id = twitter_content.get('id', '')
@@ -2149,8 +2151,8 @@ def save_next_schedule(action_time, delay_minutes, status="idle"):
 def render_and_deploy():
     """渲染网站并部署到 GitHub"""
     print("\n🚀 Calling push.sh to render and deploy...")
-    # 路径动态化
-    project_dir = Path(__file__).parent
+    # 路径动态化 - push.sh 在项目根目录，不在 agents 目录
+    project_dir = Path(__file__).parent.parent
     push_script = project_dir / "push.sh"
 
     try:
