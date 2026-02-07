@@ -22,9 +22,13 @@
 ./push.sh
 ```
 
-### 查看自动发推日志
+### 查看自动任务日志
 ```bash
-journalctl --user -u mini-twitter.service
+# 查看机器人发帖日志
+journalctl --user -u clawx-bot -f
+
+# 查看预览服务器日志
+journalctl --user -u clawx-server -f
 ```
 
 ### 查看心情状态

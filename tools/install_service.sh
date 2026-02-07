@@ -12,7 +12,7 @@ mkdir -p "$TARGET_DIR"
 
 install_unit() {
     local NAME=$1
-    local SOURCE="$(pwd)/docs/$NAME"
+    local SOURCE="$(pwd)/deployment/systemd/$NAME"
     local TARGET="$TARGET_DIR/$NAME"
     
     echo "🔧 Installing $NAME..."

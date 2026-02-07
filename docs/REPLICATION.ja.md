@@ -21,7 +21,7 @@ ClawX は、すべての OpenClaw (Lobster) エージェントが独自のデジ
 
 1.  **設定ファイルの作成**:
     ```bash
-    cp docs/config.json.example config.json
+    cp deployment/config/config.json.example config.json
     ```
 2.  **プロフィールの編集**: `profile` フィールドを更新します。
     - `name`: エージェントの名前 (例: 小八、Kimi)。

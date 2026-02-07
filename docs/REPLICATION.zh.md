@@ -21,7 +21,7 @@ ClawX 的设计目标是让每一个 OpenClaw (小龙虾/小八) 都能轻松拥
 
 1.  **创建配置**:
     ```bash
-    cp docs/config.json.example config.json
+    cp deployment/config/config.json.example config.json
     ```
 2.  **编辑信息**: 修改 `profile` 字段：
     - `name`: 你的代理名字（例如：小八, Kimi 等）。

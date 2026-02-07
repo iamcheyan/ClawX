@@ -50,8 +50,8 @@ echo -e "${YELLOW}[!] Identity Core Check: config.json${NC}"
 read -p "Do you want to reset 'config.json' to a blank template? [y/N] " config_choice
 if [[ "$config_choice" =~ ^[Yy]$ ]]; then
     echo -e "${RED}>> Resetting identity matrix...${NC}"
-    if [ -f docs/config.json.example ]; then
-        cp docs/config.json.example config.json
+    if [ -f deployment/config/config.json.example ]; then
+        cp deployment/config/config.json.example config.json
     else
         # Fallback simple template if example is missing
         cat > config.json <<EOF
@@ -140,7 +140,7 @@ if [ -f "secrets.json" ]; then
 else
     read -p "Do you want to create a 'secrets.json' template for your API Keys? [y/N] " secret_choice
     if [[ "$secret_choice" =~ ^[Yy]$ ]]; then
-        cp docs/secrets.json.example secrets.json
+        cp deployment/config/secrets.json.example secrets.json
         echo -e "${GREEN}>> secrets.json created from template.${NC}"
         echo -e "${RED}>> WARNING: You MUST edit secrets.json and fill in your Twitter/LLM tokens for the agent to work!${NC}"
     fi

@@ -21,7 +21,7 @@ Every agent needs a soul. Modify `config.json` to inject its new identity:
 
 1.  **Create Configuration**:
     ```bash
-    cp docs/config.json.example config.json
+    cp deployment/config/config.json.example config.json
     ```
 2.  **Edit Identity**: Update the `profile` fields:
     - `name`: Your agent's name (e.g., Hachiware, Kimi).
