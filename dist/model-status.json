@@ -1,38 +1,59 @@
 {
-  "generated_at": "2026-02-08 22:31:04",
+  "generated_at": "2026-02-08 22:37:26",
   "summary": {
-    "passed": 6,
-    "failed": 6,
+    "passed": 9,
+    "failed": 3,
     "total": 12
   },
   "results": [
     {
-      "provider": "google",
-      "model": "gemini-2.5-flash",
+      "provider": "LCMD",
+      "model": "gemini-claude-sonnet-4-5",
       "success": true,
-      "status": "OK (0.91s)",
-      "response": "Response matched but unexpected format"
+      "status": "OK (Spawn 4.6s)",
+      "response": "CLI responded"
     },
     {
-      "provider": "google",
-      "model": "gemini-2.5-pro",
+      "provider": "kimi",
+      "model": "moonshot-v1-32k",
       "success": true,
-      "status": "OK (1.19s)",
-      "response": "Response matched but unexpected format"
+      "status": "OK (Spawn 2.2s)",
+      "response": "CLI responded"
     },
     {
-      "provider": "google-alt",
-      "model": "gemini-2.5-flash",
+      "provider": "kimi",
+      "model": "moonshot-v1-8k",
       "success": true,
-      "status": "OK (0.95s)",
-      "response": "Response matched but unexpected format"
+      "status": "OK (Spawn 4.1s)",
+      "response": "CLI responded"
     },
     {
       "provider": "nvidia",
       "model": "qwen/qwen2.5-coder-32b-instruct",
       "success": true,
-      "status": "OK (0.24s)",
+      "status": "OK (0.30s)",
       "response": "Hello! How can I assist you today?"
+    },
+    {
+      "provider": "opencode",
+      "model": "big-pickle",
+      "success": true,
+      "status": "OK (Spawn 4.9s)",
+      "response": "CLI responded"
+    },
+    {
+      "provider": "opencode",
+      "model": "glm-4.7-free",
+      "success": true,
+      "status": "OK (Spawn 2.3s)",
+      "response": "CLI responded"
+    },
+    {
+      "provider": "openrouter",
+      "model": "moonshotai/kimi-k2.5",
+      "success": true,
+      "status": "OK (Spawn 4.4s)",
+      "response": "CLI responded"
     },
     {
       "provider": "qwen-portal",
@@ -49,46 +70,25 @@
       "response": "Managed by OpenClaw"
     },
     {
-      "provider": "LCMD",
-      "model": "gemini-claude-sonnet-4-5",
+      "provider": "google",
+      "model": "gemini-1.5-flash",
       "success": false,
-      "status": "Spawn Timeout",
-      "response": "Took too long (>50s)"
+      "status": "Err 404",
+      "response": "{   \"error\": {     \"code\": 404,     \"message\": \"models/gemin"
     },
     {
-      "provider": "kimi",
-      "model": "moonshot-v1-32k",
+      "provider": "google",
+      "model": "gemini-1.5-pro",
       "success": false,
-      "status": "Err 401",
-      "response": "{\"error\":{\"message\":\"Invalid Authentication\",\"type\":\"invalid"
+      "status": "Err 404",
+      "response": "{   \"error\": {     \"code\": 404,     \"message\": \"models/gemin"
     },
     {
-      "provider": "kimi",
-      "model": "moonshot-v1-8k",
+      "provider": "google-alt",
+      "model": "gemini-1.5-flash",
       "success": false,
-      "status": "Err 401",
-      "response": "{\"error\":{\"message\":\"Invalid Authentication\",\"type\":\"invalid"
-    },
-    {
-      "provider": "opencode",
-      "model": "big-pickle",
-      "success": false,
-      "status": "Spawn Timeout",
-      "response": "Took too long (>50s)"
-    },
-    {
-      "provider": "opencode",
-      "model": "glm-4.7-free",
-      "success": false,
-      "status": "Spawn Timeout",
-      "response": "Took too long (>50s)"
-    },
-    {
-      "provider": "openrouter",
-      "model": "moonshotai/kimi-k2.5",
-      "success": false,
-      "status": "Err 401",
-      "response": "{\"error\":{\"message\":\"User not found.\",\"code\":401}}"
+      "status": "Err 404",
+      "response": "{   \"error\": {     \"code\": 404,     \"message\": \"models/gemin"
     }
   ]
 }
