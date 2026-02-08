@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-02-08 22:38:27",
+  "generated_at": "2026-02-08 22:39:40",
   "summary": {
     "passed": 12,
     "failed": 0,
@@ -17,56 +17,56 @@
       "provider": "google",
       "model": "gemini-2.5-flash",
       "success": true,
-      "status": "OK (0.83s)",
+      "status": "OK (0.91s)",
       "response": "Response matched but unexpected format"
     },
     {
       "provider": "google",
       "model": "gemini-2.5-pro",
       "success": true,
-      "status": "OK (3.33s)",
+      "status": "OK (1.47s)",
       "response": "Response matched but unexpected format"
     },
     {
       "provider": "google-alt",
       "model": "gemini-2.5-flash",
       "success": true,
-      "status": "OK (0.96s)",
-      "response": "Hi"
+      "status": "OK (0.92s)",
+      "response": "Response matched but unexpected format"
     },
     {
       "provider": "kimi",
       "model": "moonshot-v1-32k",
       "success": true,
-      "status": "OK (Spawn 1.8s)",
+      "status": "OK (Spawn 1.9s)",
       "response": "CLI responded"
     },
     {
       "provider": "kimi",
       "model": "moonshot-v1-8k",
       "success": true,
-      "status": "OK (Spawn 3.0s)",
+      "status": "OK (Spawn 2.9s)",
       "response": "CLI responded"
     },
     {
       "provider": "nvidia",
       "model": "qwen/qwen2.5-coder-32b-instruct",
       "success": true,
-      "status": "OK (0.26s)",
+      "status": "OK (0.32s)",
       "response": "Hello! How can I assist you today?"
     },
     {
       "provider": "opencode",
       "model": "big-pickle",
       "success": true,
-      "status": "OK (Spawn 2.7s)",
+      "status": "OK (Spawn 2.6s)",
       "response": "CLI responded"
     },
     {
       "provider": "opencode",
       "model": "glm-4.7-free",
       "success": true,
-      "status": "OK (Spawn 2.3s)",
+      "status": "OK (Spawn 2.4s)",
       "response": "CLI responded"
     },
     {
