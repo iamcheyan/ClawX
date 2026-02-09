@@ -1,38 +1,87 @@
 {
-  "generated_at": "2026-02-09 22:52:22",
+  "generated_at": "2026-02-09 22:54:41",
   "summary": {
-    "passed": 6,
-    "failed": 7,
+    "passed": 13,
+    "failed": 0,
     "total": 13
   },
   "results": [
     {
+      "provider": "_disabled_LCMD",
+      "model": "gemini-claude-sonnet-4-5",
+      "success": true,
+      "status": "OK (Spawn 3.8s)",
+      "response": "CLI responded"
+    },
+    {
+      "provider": "_disabled_kimi",
+      "model": "moonshot-v1-32k",
+      "success": true,
+      "status": "OK (Spawn 2.3s)",
+      "response": "CLI responded"
+    },
+    {
+      "provider": "_disabled_kimi",
+      "model": "moonshot-v1-8k",
+      "success": true,
+      "status": "OK (Spawn 4.1s)",
+      "response": "CLI responded"
+    },
+    {
+      "provider": "_disabled_openrouter",
+      "model": "moonshotai/kimi-k2.5",
+      "success": true,
+      "status": "OK (Spawn 3.0s)",
+      "response": "CLI responded"
+    },
+    {
       "provider": "google",
       "model": "gemini-2.5-flash",
       "success": true,
-      "status": "OK (0.82s)",
+      "status": "OK (0.80s)",
       "response": "Response matched but unexpected format"
     },
     {
       "provider": "google",
       "model": "gemini-2.5-pro",
       "success": true,
-      "status": "OK (2.77s)",
+      "status": "OK (3.12s)",
       "response": "Response matched but unexpected format"
     },
     {
       "provider": "google-alt",
       "model": "gemini-2.5-flash",
       "success": true,
-      "status": "OK (1.00s)",
+      "status": "OK (0.96s)",
       "response": "Response matched but unexpected format"
     },
     {
       "provider": "nvidia",
       "model": "qwen/qwen2.5-coder-32b-instruct",
       "success": true,
-      "status": "OK (0.25s)",
+      "status": "OK (0.27s)",
       "response": "Hello! How can I assist you today?"
+    },
+    {
+      "provider": "nvidia-kimi",
+      "model": "moonshotai/kimi-k2.5",
+      "success": true,
+      "status": "OK (Spawn 2.0s)",
+      "response": "CLI responded"
+    },
+    {
+      "provider": "opencode",
+      "model": "big-pickle",
+      "success": true,
+      "status": "OK (Spawn 3.0s)",
+      "response": "CLI responded"
+    },
+    {
+      "provider": "opencode",
+      "model": "glm-4.7-free",
+      "success": true,
+      "status": "OK (Spawn 3.9s)",
+      "response": "CLI responded"
     },
     {
       "provider": "qwen-portal",
@@ -47,55 +96,6 @@
       "success": true,
       "status": "OAUTH MODE",
       "response": "Managed by OpenClaw"
-    },
-    {
-      "provider": "_disabled_LCMD",
-      "model": "gemini-claude-sonnet-4-5",
-      "success": false,
-      "status": "Spawn CLI Err",
-      "response": "[Errno 2] No such file or directory: '/usr/bin/openclaw'"
-    },
-    {
-      "provider": "_disabled_kimi",
-      "model": "moonshot-v1-32k",
-      "success": false,
-      "status": "Err 401",
-      "response": "{\"error\":{\"message\":\"Invalid Authentication\",\"type\":\"invalid"
-    },
-    {
-      "provider": "_disabled_kimi",
-      "model": "moonshot-v1-8k",
-      "success": false,
-      "status": "Err 401",
-      "response": "{\"error\":{\"message\":\"Invalid Authentication\",\"type\":\"invalid"
-    },
-    {
-      "provider": "_disabled_openrouter",
-      "model": "moonshotai/kimi-k2.5",
-      "success": false,
-      "status": "Err 401",
-      "response": "{\"error\":{\"message\":\"User not found.\",\"code\":401}}"
-    },
-    {
-      "provider": "nvidia-kimi",
-      "model": "moonshotai/kimi-k2.5",
-      "success": false,
-      "status": "HTTP Timeout",
-      "response": "HTTPSConnectionPool(host='integrate.api.nvidia.com', port=44"
-    },
-    {
-      "provider": "opencode",
-      "model": "big-pickle",
-      "success": false,
-      "status": "Spawn CLI Err",
-      "response": "[Errno 2] No such file or directory: '/usr/bin/openclaw'"
-    },
-    {
-      "provider": "opencode",
-      "model": "glm-4.7-free",
-      "success": false,
-      "status": "Spawn CLI Err",
-      "response": "[Errno 2] No such file or directory: '/usr/bin/openclaw'"
     }
   ]
 }
