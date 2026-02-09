@@ -49,7 +49,7 @@ def fetch_recent_tweets():
     """使用 bird-x 获取人类最近推文"""
     try:
         result = subprocess.run(
-            ["bird-x", "user-tweets", HUMAN_TWITTER_HANDLE, "-n", "5", "--json"],
+            ["/home/tetsuya/.local/bin/bird-x", "user-tweets", HUMAN_TWITTER_HANDLE, "-n", "5", "--json"],
             capture_output=True,
             text=True,
             timeout=30

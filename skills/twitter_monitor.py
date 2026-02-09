@@ -37,7 +37,7 @@ SOCIAL_CONFIG = SEC_CONFIG.get("social", {}).get("twitter", {})
 OWNER_USERNAME = SOCIAL_CONFIG.get("owner_username", "iamcheyan")
 KEY_ACCOUNTS = SOCIAL_CONFIG.get("key_accounts", ["yetone", "blackanger"])
 DISCUSSION_KEYWORDS = SOCIAL_CONFIG.get("monitored_keywords", ["AI", "OpenClaw", "Agent"])
-TWITTER_CLI = SOCIAL_CONFIG.get("cli_command", "bird-x")
+TWITTER_CLI = "/home/tetsuya/.local/bin/bird-x"
 
 def load_state():
     """加载已处理的推文ID列表"""
