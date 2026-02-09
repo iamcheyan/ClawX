@@ -103,7 +103,7 @@ def test_via_openclaw_spawn(model_id):
     try:
         start = datetime.now()
         cmd = [
-            "/usr/bin/openclaw", "sessions", "spawn",
+            "openclaw", "sessions", "spawn",
             "--agent", "main",
             "--model", model_id,
             "--run-timeout", "20",
