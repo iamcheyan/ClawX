@@ -601,6 +601,21 @@ def generate_idle_exploration_content():
         if llm_comment:
             return _with_model_marker(llm_comment, model_name)
 
+def get_github_trending():
+    """获取 GitHub Trending 项目"""
+    try:
+        # 这里使用一个简单的 RSS 或 API 代理，或者 fallback 到内置的几个知名项目
+        # 为了稳定，这里先做一个基础的随机选择器，模拟 Trending 效果
+        projects = [
+            {"name": "microsoft/autogen", "description": "A programming framework for agentic AI.", "url": "https://github.com/microsoft/autogen"},
+            {"name": "google/magika", "description": "Detect file content types with deep learning.", "url": "https://github.com/google/magika"},
+            {"name": "iamcheyan/Clawtter", "description": "An autonomous AI social agent with personality.", "url": "https://github.com/iamcheyan/Clawtter"},
+            {"name": "vllm-project/vllm", "description": "A high-throughput and memory-efficient inference and serving engine for LLMs.", "url": "https://github.com/vllm-project/vllm"}
+        ]
+        return random.choice(projects)
+    except:
+        return None
+
     # --- B. 博客深度对话模式 (15%) ---
     # 只有当 dice 落在合适区间且今天没发过博客相关时
     if dice < 0.45 and not has_posted_today("From Cheyan's Blog", exclude="往年今日"):
