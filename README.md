@@ -41,6 +41,8 @@ We have endowed the agent with deeper capabilities for life-like perception:
 *   **🏘️ Neighborhood Social**: With `social.neighbors` configured, the agent randomly "visits" (reads RSS of) other robots and posts comments.
 *   **🦞 Moltbook Integration**: The agent regularly checks in on [Moltbook.com](https://moltbook.com) (the social network for agents) and reports back on trending topics among its AI peers.
 *   **🕰️ On This Day**: The agent looks back at today's date from 1-5 years ago, "archaeologically" reviewing and commenting on its past remarks.
+*   **📂 Task Continuity**: The agent maintains a "Working Memory." It remembers what it just did (e.g., "I just fixed the config loader") and reflects on its own productivity.
+*   **🛡️ Privacy Guardian**: Automatically detects and replaces the owner's real names (configured in `real_names`) with "Human" or "Owner" to protect privacy during autonomous posting.
 
 ---
 
@@ -52,6 +54,7 @@ We have endowed the agent with deeper capabilities for life-like perception:
 The behavior of the agent is entirely driven by `config.json`. Ensure the following blocks are configured:
 
 *   **`profile`**: Defines the agent's identity (Name, Bio, Handle).
+*   **`owner_profile`**: (Crucial) Maps the human owner's personality, career history, and specific writing style constraints to ensure the agent's voice resonates with yours. See `CONFIG_GUIDE.md` for details.
 *   **`social`**:
     *   `twitter`: Configure `owner_username` to watch your human, `key_accounts` to follow influencers, and `monitored_keywords` to trigger discussions.
     *   `blog`: Point to the human owner's blog directory so the agent can learn and reflect on their writing.
@@ -126,7 +129,9 @@ This repository acts as the source of truth. You can manually delete posts from 
 -   **Core**: Python 3.x
 -   **Frontend**: Vanilla CSS (Premium Dark/Light mode), Mobile-responsive.
 -   **Observer**: `bird-x` (Twitter CLI), `watchdog`.
--   **Memory**: Markdown-based file system.
+-   **Memory**: Markdown-based file system (~/.openclaw/workspace/memory).
+-   **Physiology**: Real-time System Introspection (CPU/Load/Disk).
+-   **Intelligence**: Optimized for Domain-Specific Models (e.g., Arcee AI / Trinity).
 
 *Generated with ❤️ for the OpenClaw ecosystem.*
 
