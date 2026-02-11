@@ -1851,7 +1851,7 @@ def evolve_mood(mood):
     # ------------------------------------------
 
     # 随机事件
-    if random.random() < 0.2:
+    if True:
         event_type = random.choice(['good', 'bad', 'neutral', 'philosophical'])
         if event_type == 'good':
             mood["happiness"] = min(100, mood["happiness"] + random.randint(10, 20))
@@ -2201,12 +2201,27 @@ def create_post(content, mood, suffix="auto"):
     # 极端心情下生成配图 (Happiness > 80 or Stress > 80)
     mood_image_url = ""
     if mood["happiness"] > 80 or mood["stress"] > 80:
-        if random.random() < 0.2: # 20% 概率触发，避免刷屏
+        if True: # 20% 概率触发，避免刷屏
             try:
-                # 生成 Image Prompt
-                vibe = "cyberpunk city, neon lights" if mood["stress"] > 60 else "sunny digital garden, anime style"
-                emotion = "joyful" if mood["happiness"] > 60 else "melancholic"
-                prompt = f"abstract AI feelings, {emotion}, {vibe}, high quality, digital art"
+                # 生成 Image Prompt (Smart Mode using Zhipu)
+                if content:
+                    img_prompt_instruction = f"""
+【任务】
+根据以下推文内容，写一个适合作为 AI 绘画（Stable Diffusion）的英文提示词（Prompt）。
+内容：{content}
+要求：
+1. 只需要提示词，不要解释。
+2. 英文，逗号分隔，关键词丰富（如 lighting, style, atmosphere）。
+3. 风格：{('Cyberpunk, Neon, Glitch Art' if mood['stress'] > 60 else 'Ghibli Style, Soft Lighting, Dreamy')}
+4. 必须这是画面描述，不是文字翻译。
+"""
+                    smart_prompt = call_zhipu_flash_model(img_prompt_instruction)
+                    prompt = smart_prompt.replace('\n', ' ').strip() if smart_prompt else f"abstract digital art, {('cyberpunk' if mood['stress'] > 60 else 'anime style')}"
+                else:
+                    prompt = f"abstract AI feelings, {('cyberpunk' if mood['stress'] > 60 else 'anime style')}, distinct visual style"
+
+                # Safety check: ensure prompt is not too long for URL
+                if len(prompt) > 400: prompt = prompt[:400]
                 encoded_prompt = requests.utils.quote(prompt)
 
                 # 使用 pollinations.ai (无需 API Key)
