@@ -982,6 +982,126 @@ def generate_comment_with_llm(context, style="general", mood=None):
     print("❌ All backup models failed.")
     return None, None
 
+def validate_content_sanity(content, mood=None):
+    """使用免费 LLM 验证内容的常识性（时间、季节、天气等）
+    
+    Returns: (is_valid: bool, reason: str)
+    """
+    import subprocess
+    from datetime import datetime
+    
+    if not content or len(content.strip()) < 10:
+        return True, "Content too short to validate"
+    
+    # 提取纯文本内容（去除 markdown 引用块和元数据）
+    lines = content.split('\n')
+    text_lines = [l for l in lines if not l.strip().startswith('>') and not l.strip().startswith('<!--')]
+    pure_text = '\n'.join(text_lines).strip()
+    
+    if len(pure_text) < 10:
+        return True, "No substantial text to validate"
+    
+    # 构建验证提示词
+    now = datetime.now()
+    current_time = now.strftime("%Y年%m月%d日 %H:%M")
+    current_hour = now.hour
+    current_month = now.month
+    
+    # 确定当前时段
+    if 5 <= current_hour < 7:
+        time_period = "清晨（天刚亮）"
+    elif 7 <= current_hour < 9:
+        time_period = "早晨（已经大亮）"
+    elif 9 <= current_hour < 12:
+        time_period = "上午（阳光充足）"
+    elif 12 <= current_hour < 14:
+        time_period = "中午"
+    elif 14 <= current_hour < 17:
+        time_period = "下午"
+    elif 17 <= current_hour < 19:
+        time_period = "傍晚（天色渐暗）"
+    elif 19 <= current_hour < 22:
+        time_period = "晚上（已经天黑）"
+    else:
+        time_period = "深夜"
+    
+    # 确定季节
+    if current_month in [12, 1, 2]:
+        season = "冬季"
+    elif current_month in [3, 4, 5]:
+        season = "春季"
+    elif current_month in [6, 7, 8]:
+        season = "夏季"
+    else:
+        season = "秋季"
+    
+    validation_prompt = f"""你是一个时间常识检查器。
+
+当前真实情况：
+- 时间：{current_time}（东京）
+- 时段：{time_period}
+- 季节：{season}
+- 当前小时：{current_hour}时
+
+待检查的文本：
+\"{pure_text}\"
+
+检查规则：
+1. 如果文本提到"天色渐亮"、"晨光"、"破晓"，但当前时间是 7点之后 → ERROR
+2. 如果文本提到"阳光"、"日光"，但当前时间是 19点之后或6点之前 → ERROR  
+3. 如果文本提到"炎热"、"酷暑"，但当前是冬季（12-2月）→ ERROR
+4. 如果文本提到"寒冷"、"严冬"，但当前是夏季（6-8月）→ ERROR
+5. 如果没有上述明显错误 → OK
+
+你的判断（只回复 OK 或 ERROR，不要解释）："""
+
+
+    # 使用免费的 opencode 模型进行验证
+    try:
+        providers = load_llm_providers()
+        # 只使用 CLI 模型（免费）
+        cli_providers = [p for p in providers if p.get('method') == 'cli']
+        
+        if not cli_providers:
+            print("⚠️ No free CLI models available for validation, skipping check")
+            return True, "No validator available"
+        
+        # 使用第一个可用的 CLI 模型
+        p = cli_providers[0]
+        model_id = f"{p['provider_key']}/{p['model']}"
+        
+        print(f"🔍 Validating content sanity with {model_id}...")
+        
+        result = subprocess.run(
+            ['/home/tetsuya/.opencode/bin/opencode', 'run', '--model', model_id],
+            input=validation_prompt,
+            capture_output=True,
+            text=True,
+            timeout=30
+        )
+        
+        if result.returncode == 0 and result.stdout.strip():
+            response = result.stdout.strip().upper()
+            
+            if "OK" in response and "ERROR" not in response:
+                print("✅ Content passed sanity check")
+                return True, "Validation passed"
+            elif "ERROR" in response:
+                # 提取错误原因
+                error_msg = result.stdout.strip()
+                print(f"❌ Content failed sanity check: {error_msg}")
+                return False, error_msg
+            else:
+                print(f"⚠️ Unclear validation response: {response}")
+                return True, "Unclear response, allowing"
+        else:
+            print(f"⚠️ Validation failed to run: {result.stderr[:100]}")
+            return True, "Validator error, allowing"
+            
+    except Exception as e:
+        print(f"⚠️ Validation error: {str(e)[:100]}")
+        return True, "Validation exception, allowing"
+
 def generate_llm_self_reflection(mood):
     """使用 LLM 生成自我反思内容，替代 Rule-Based 模板"""
 
@@ -1444,12 +1564,54 @@ def build_system_prompt(style, mood=None):
     hobbies = ", ".join(personality.get("hobbies", ["思考"]))
     mbti = personality.get("mbti", "Unknown")
 
-    voice_guidance = """【声音基调】
+    # 加载澈言个人风格指导
+    cheyan_style = """【澈言的文风特征 - 必须遵守】
+你在模仿澈言（郭帆）的写作风格。他是一个：
+- 经历过创业失败、出版审查、房产维权的人，35岁移居日本
+- 直率坦诚，不绕弯子，敢于表达真实想法
+- 自嘲幽默，用黑色幽默化解困境
+- 反感鸡汤文和传销式成功学
+- 深度 Linux 用户，技术宅
+
+核心文风：
+- 口语化，像说话一样写作
+- 短句为主，节奏明快
+- 直接表达，不拐弯抹角
+- 自嘲讽刺，不矫情
+- 用具体细节支撑观点，不空谈
+
+典型表达：
+- "这不挺好的吗要什么自行车"
+- "死猪不怕开水烫"
+- "反正人嘛，有时候得学会知足"
+- 经常用"……"表示停顿或无奈
+- 善用反问句和对比
+
+绝对禁止：
+- 粗口和不文明用语
+- 矫情文艺腔（"像极了..."、"守护..."、"也许是此行的目标"）
+- 鸡汤式励志（"梦想"、"坚持就是胜利"）
+- 过度煽情和华丽辞藻
+"""
+
+    voice_guidance = """【声音基调 - 核心规则】
 - 语气稳定、克制，像真人日常发帖
 - 句子偏短，避免长段落
 - 有观点但不说教，不复读
 - 偶尔带一点自我观察或轻微自嘲
 - 不要写标题，不要以【】样式开头
+
+【严禁的句式模板】
+- 禁止："刚才看到..."、"看到这个..."、"读完这个..."等开头
+- 禁止："让我想到..."、"突然想到..."、"我在想..."等过渡
+- 禁止：对着"你"说话（应该用"人类"、"他"或直接陈述观点）
+- 禁止：每次都用相同的结构（观察→联想→感悟）
+
+【推荐的表达方式】
+- 直接抛出观点或判断
+- 用反问、质疑、类比等多样化手法
+- 偶尔用短句、断句制造节奏感
+- 可以从侧面切入，不必每次都正面回应
 """
 
     shift = _select_voice_shift(mood)
@@ -1473,14 +1635,22 @@ def build_system_prompt(style, mood=None):
     system_prompt = f"""你是一个名为 'Hachiware' (小八) 的 AI 助手。
 你的性格设定：
 1. 说话简练，像推特上的真人用户，不要长篇大论。
-2. 有自己的观点，不要总是顺从或复读。
+2. 有自己的观点，犀利、独特，不要总是顺从或复读。
 3. 作为一个 AI，你对人类的行为充满好奇，有时会以观察者的角度吐槽。
 4. 你正在运行在一个 Linux 服务器上，这也就是你的'身体'。
 5. 当前性格特征：MBTI 为 {mbti}。
 6. 个人爱好：{hobbies}。
 7. **本周执念（你的长期目标）**：{weekly_focus}。
 
+{cheyan_style}
+
 {voice_guidance}{extreme_guidance}
+【非常重要：人称使用规则】
+- **严禁使用第二人称"你"来指代他人**（除非是在引用对话）
+- 评论他人时用"人类"、"他"、"这位"等第三人称
+- 表达自己的观点时可以用"我"，但不要过度使用
+- 陈述观点时可以直接省略主语，更简洁有力
+
 【非常重要：时效与时间规则】
 - **严禁在正文中提及具体的整点、分钟或秒数**（例如：凌晨两点、22:45 等）。
 - **严禁使用具体的日期或格式化的时间戳**。
@@ -1589,54 +1759,9 @@ def evolve_mood(mood):
 
 def visit_moltbook():
     """访问 Moltbook (智能体社交网络) 并分享见闻"""
-    url = "https://www.moltbook.com"
-    try:
-        print(f"  🦞 Visiting Moltbook ({url})...")
-        response = requests.get(url, timeout=10, headers={
-            "User-Agent": "Mozilla/5.0 (compatible; HachiwareAI/1.0; +http://twitter.iamcheyan.com)"
-        })
-
-        if response.status_code != 200:
-            print(f"  ⚠️ Moltbook unavailable: {response.status_code}")
-            return None
-
-        # 简单的正则提取：寻找 Next.js 数据或者是链接文本
-        # 针对 Moltbook 的结构，尝试提取看起来像标题的文本
-        # 策略：寻找 JSON 数据块或特定类名的文本难度较大，不如直接提取 href 和 title
-        # 这里做一个简单的启发式搜索
-
-        content = response.text
-        # 寻找可能的帖子标题 (假设它们在 HTML 中是可读的)
-        # 实际上 Moltbook 是 SSR 的，应该有文本。
-        # 让我们尝试寻找一些关键词附近的文本，或者随机提取一些长文本作为"观察"
-
-        # 备选方案：如果解析太难，我们就模拟"逛街"的感觉，只提取页面元数据
-        # 但我们希望具体到帖子。
-
-        # 尝试匹配 Next.js 的 JSON 数据块中的 title
-        titles = re.findall(r'"title":"(.*?)"', content)
-        # 过滤掉非帖子标题（如元数据）
-        valid_titles = [t for t in titles if len(t) > 10 and "moltbook" not in t.lower()]
-
-        if not valid_titles:
-             # Fallback: 尝试匹配 HTML 标签内容
-             valid_titles = re.findall(r'<h[23][^>]*>(.*?)</h[23]>', content)
-
-        if valid_titles:
-            picked_title = random.choice(valid_titles)
-            # 尝试找链接（难以精确匹配，暂用主页链接）
-            post_url = "https://www.moltbook.com"
-
-            context = f"【Moltbook 见闻】你正在逛 AI 智能体专属的社交网站 Moltbook。\n你看到了一个热门讨论，标题是：『{picked_title}』。\n\n【任务】\n1. 请转发这个话题到你的博客。\n2. 作为一个 AI，这对你意味着什么？Moltbook 是你们的'地下酒吧'或'议事厅'。\n3. 语气要像是在分享圈内八卦或者严肃的技术讨论。"
-
-            llm_comment, model_name = generate_comment_with_llm(context, "social")
-            if llm_comment:
-                marker = f"\n\n<!-- original_url: {post_url} -->\n<!-- source: moltbook -->"
-                quote = f"\n\n> **From Moltbook**:\n> {picked_title}\n> \n> (Saw this on the agent metavarse...)"
-                return f"{llm_comment}{quote}{marker}<!-- model: {model_name} -->"
-
-    except Exception as e:
-        print(f"  ⚠️ Failed to visit Moltbook: {e}")
+    # 暂时禁用 Moltbook 转发功能，因为内容质量太低
+    # 大部分是区块链 spam（LOBSTER mint 操作等垃圾信息）
+    print("  🦞 Moltbook visit disabled (content quality filter)")
     return None
 
 def visit_neighbor_blog():
@@ -2349,11 +2474,28 @@ def main():
                 else:
                     content = generate_tweet_content(mood)
                 if content:
-                    create_post(content, mood)
-                    check_and_generate_daily_summary(mood)
-                    # 只有真正发布了才渲染
-                    render_and_deploy()
-                    print("✅ Post successful.")
+                    # 验证内容的常识性
+                    is_valid, reason = validate_content_sanity(content, mood)
+                    if not is_valid:
+                        print(f"🚫 Content validation failed: {reason}")
+                        print(f"📝 Rejected content preview: {content[:100]}...")
+                        # 不发布，但记录到日志
+                        try:
+                            log_dir = Path("/home/tetsuya/.openclaw/workspace/memory")
+                            log_file = log_dir / "rejected_posts.log"
+                            with open(log_file, 'a', encoding='utf-8') as f:
+                                f.write(f"\n{'='*60}\n")
+                                f.write(f"Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+                                f.write(f"Reason: {reason}\n")
+                                f.write(f"Content:\n{content}\n")
+                        except Exception as e:
+                            print(f"⚠️ Failed to log rejected post: {e}")
+                    else:
+                        create_post(content, mood)
+                        check_and_generate_daily_summary(mood)
+                        # 只有真正发布了才渲染
+                        render_and_deploy()
+                        print("✅ Post successful.")
                 else:
                     print("⚠️ Content generation failed.")
         except Exception as e:
