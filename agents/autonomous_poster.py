@@ -779,8 +779,15 @@ def generate_idle_exploration_content():
             author = twitter_content.get('author_handle', 'unknown')
             tweet_id = twitter_content.get('id', '')
             tweet_url = f"https://x.com/{author}/status/{tweet_id}"
+            created_at = twitter_content.get('created_at', '')
+            
+            # 使用 raw_text (包含图片)
             quote = f"\n\n> **From X (@{author})**:\n> {twitter_content.get('raw_text')}"
-            marker = f"\n\n<!-- original_url: {tweet_url} -->"
+            
+            # 使用标准 metadata 格式
+            marker = f"\n\n<!-- original_time: {created_at} -->" if created_at else ""
+            marker += f"\n<!-- original_url: {tweet_url} -->"
+            
             return _with_model_marker(llm_comment + quote + marker, model_name)
 
     return None
