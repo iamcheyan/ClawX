@@ -1757,7 +1757,8 @@ body.local-dev .tweet-delete-btn {
 }
 
 .page-num,
-.page-nav {
+.page-nav,
+.page-ellipsis {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1772,6 +1773,13 @@ body.local-dev .tweet-delete-btn {
     font-weight: 500;
     border: 1px solid var(--border-color);
     transition: all 0.2s ease;
+}
+
+.page-ellipsis {
+    border: none;
+    background: transparent;
+    cursor: default;
+    color: var(--text-secondary);
 }
 
 .page-num:hover,

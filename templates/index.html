@@ -235,13 +235,14 @@
                     class="page-nav">«</a>
                 {% endif %}
 
-                {% for i in range(pagination.total_pages) %}
-                {% set p_num = i + 1 %}
-                {% set d_key = pagination.all_dates[i] %}
-                {% if p_num == 1 %}
+                {% for p_num in pagination.slots %}
+                {% if p_num is none %}
+                <span class="page-ellipsis">……</span>
+                {% elif p_num == 1 %}
                 <a href="{% if pagination.is_home %}index.html{% else %}../index.html{% endif %}"
                     class="page-num {% if pagination.current_idx == 1 %}active{% endif %}">1</a>
                 {% else %}
+                {% set d_key = pagination.all_dates[p_num-1] %}
                 <a href="{% if pagination.is_home %}date/{{ d_key }}.html{% else %}{{ d_key }}.html{% endif %}"
                     class="page-num {% if pagination.current_idx == p_num %}active{% endif %}">{{ p_num }}</a>
                 {% endif %}

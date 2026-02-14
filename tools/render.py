@@ -141,6 +141,32 @@ class Post:
             'view_count': self.metadata.get('views', '0'),
         }
 
+def get_pagination_slots(current, total):
+    """计算分页槽位提示，支持中间省略号"""
+    if total <= 10:
+        return list(range(1, total + 1))
+    
+    res = [1, 2]
+    if current <= 5:
+        res.extend([3, 4, 5, 6])
+        res.append(None)
+        res.extend([total - 1, total])
+    elif current >= total - 4:
+        res.append(None)
+        res.extend(range(total - 5, total + 1))
+    else:
+        res.append(None)
+        res.extend([current - 1, current, current + 1])
+        res.append(None)
+        res.extend([total - 1, total])
+    
+    # 清理重复的和连续的 None
+    final = []
+    for item in res:
+        if not final or final[-1] != item:
+            final.append(item)
+    return final
+
 def render_content_with_repost(post, truncate=False, detail_url=None):
     """渲染内容,将评论和转发内容分开"""
     original_content = post.content
@@ -682,6 +708,17 @@ def render_posts():
     first_date_key = all_dates[0]
     first_date_posts = posts_by_date[first_date_key]
     posts_html_list = [render_tweet_html(p, timestamp, CONFIG, is_home=True) for p in first_date_posts]
+    total_pages = len(all_dates)
+    current_idx = 1
+    pagination_data = {
+        'enabled': True,
+        'all_dates': all_dates,
+        'total_pages': total_pages,
+        'current_idx': current_idx,
+        'is_home': True,
+        'slots': get_pagination_slots(current_idx, total_pages)
+    }
+    
     html_output = index_template.render(
         title="Home",
         description=CONFIG['profile_bio'],
@@ -698,13 +735,7 @@ def render_posts():
         archive_days_json=archive_days_json,
         themes=get_theme_data(posts),
         posts_content='\n'.join(posts_html_list),
-        pagination={
-            'enabled': True,
-            'all_dates': all_dates,
-            'total_pages': len(all_dates),
-            'current_idx': 1,
-            'is_home': True
-        },
+        pagination=pagination_data,
         last_updated=datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         next_update=next_update_str,
         timestamp=timestamp,
@@ -722,6 +753,18 @@ def render_posts():
         prev_date = all_dates[i + 1] if i < len(all_dates) - 1 else None
         next_date = all_dates[i - 1] if i > 0 else None
         
+        pagination_data = {
+            'enabled': True,
+            'current_date': date_key,
+            'prev_date': prev_date,
+            'next_date': next_date,
+            'all_dates': all_dates,
+            'total_pages': len(all_dates),
+            'current_idx': i + 1,
+            'is_home': False,
+            'slots': get_pagination_slots(i + 1, len(all_dates))
+        }
+        
         date_html = index_template.render(
             title=f"Posts from {date_key}",
             description=CONFIG['profile_bio'],
@@ -738,21 +781,13 @@ def render_posts():
             archive_days_json=archive_days_json,
             themes=get_theme_data(posts),
             posts_content='\n'.join(date_posts_html),
-            pagination={
-                'enabled': True,
-                'current_date': date_key,
-                'prev_date': prev_date,
-                'next_date': next_date,
-                'all_dates': all_dates,
-                'total_pages': len(all_dates),
-                'current_idx': i + 1,
-                'is_home': False
-            },
+            pagination=pagination_data,
             last_updated=datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
             next_update=next_update_str,
             timestamp=timestamp,
             CONFIG=CONFIG
         )
+
         date_file_path = date_pages_dir / f"{date_key}.html"
         with open(date_file_path, 'w', encoding='utf-8') as f:
             f.write(date_html)
