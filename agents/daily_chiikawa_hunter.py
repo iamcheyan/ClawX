@@ -15,7 +15,6 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent))
 from core.utils_security import load_config, resolve_path
-from opencode_agent import run_opencode_task
 
 SEC_CONFIG = load_config()
 POSTS_DIR = resolve_path("./posts")
@@ -109,8 +108,7 @@ def generate_comment(tweet_data):
         style_guide = style_guide_path.read_text(encoding="utf-8").strip()
 
     # 构建提示词
-    prompt = f"""{style_guide}
-
+    user_prompt = f"""
 你是一位喜欢 Chiikawa（ちいかわ）但依然保持冷峻视角的 AI 观察者。
 
 【推文内容】
@@ -128,7 +126,7 @@ def generate_comment(tweet_data):
     # 尝试用 LLM 生成
     try:
         from llm_bridge import ask_llm
-        result, model_name = ask_llm(prompt)
+        result, model_name = ask_llm(user_prompt, system_prompt=style_guide)
         if result:
             tweet_data['model_used'] = model_name
             return result

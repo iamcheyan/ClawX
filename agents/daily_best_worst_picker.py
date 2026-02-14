@@ -71,8 +71,7 @@ def analyze_and_pick(tweets):
     if style_guide_path.exists():
         style_guide = style_guide_path.read_text(encoding="utf-8").strip()
 
-    prompt = f"""{style_guide}
-
+    user_prompt = f"""
 从以下过去24小时的推文中，选出你【最喜欢】和【最讨厌】的一条。
 
 【推文列表】
@@ -103,7 +102,7 @@ def analyze_and_pick(tweets):
 
     try:
         from llm_bridge import ask_llm
-        result, model_name = ask_llm(prompt)
+        result, model_name = ask_llm(user_prompt, system_prompt=style_guide)
         
         if not result:
             return None, None

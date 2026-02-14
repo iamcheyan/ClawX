@@ -115,8 +115,7 @@ def generate_observation(analysis, tweets):
         style_guide = style_guide_path.read_text(encoding="utf-8").strip()
 
     # 构建提示词
-    prompt = f"""{style_guide}
-
+    user_prompt = f"""
 【数据背景】
 - 分析推文数: {analysis['total']}
 - 活跃用户数: {len(analysis['authors'])}
@@ -146,7 +145,7 @@ def generate_observation(analysis, tweets):
     # 调用 LLM 生成 (智谱优先 -> Opencode 备用)
     try:
         from llm_bridge import ask_llm
-        result, model_name = ask_llm(prompt)
+        result, model_name = ask_llm(user_prompt, system_prompt=style_guide)
         if result and len(result) > 200:
             return result
     except Exception as e:

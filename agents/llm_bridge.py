@@ -4,7 +4,7 @@ import requests
 import subprocess
 from pathlib import Path
 
-def call_zhipu_llm(prompt, system_prompt="你是一个充满哲学思考、偶尔幽默的开源项目 AI 助理。请用中文回答。"):
+def call_zhipu_llm(prompt, system_prompt="You are a helpful assistant."):
     """
     尝试调用智谱 GLM-4-Flash 免费模型。
     """
