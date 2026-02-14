@@ -2220,7 +2220,8 @@ def create_post(content, mood, suffix="auto"):
                 else:
                     prompt = f"abstract AI feelings, {('cyberpunk' if mood['stress'] > 60 else 'anime style')}, distinct visual style"
 
-                # Safety check: ensure prompt is not too long for URL
+                # Safety check: ensure prompt is not too long for URL and remove non-ASCII (it breaks pollinations)
+                prompt = re.sub(r'[^\x00-\x7f]', '', prompt)
                 if len(prompt) > 400: prompt = prompt[:400]
                 encoded_prompt = requests.utils.quote(prompt)
 
