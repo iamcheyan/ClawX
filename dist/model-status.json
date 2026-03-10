@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-11 00:00:24",
+  "generated_at": "2026-03-11 01:00:17",
   "summary": {
     "passed": 7,
     "failed": 8,
@@ -10,22 +10,22 @@
       "provider": "google",
       "model": "gemini-2.5-flash",
       "success": true,
-      "status": "OK (1.20s)",
+      "status": "OK (1.13s)",
       "response": "Response matched but unexpected format"
     },
     {
       "provider": "google",
       "model": "gemini-2.5-pro",
       "success": true,
-      "status": "OK (2.63s)",
+      "status": "OK (2.85s)",
       "response": "Response matched but unexpected format"
     },
     {
       "provider": "google-alt",
       "model": "gemini-2.5-flash",
       "success": true,
-      "status": "OK (1.05s)",
-      "response": "Response matched but unexpected format"
+      "status": "OK (1.45s)",
+      "response": "Hi"
     },
     {
       "provider": "nvidia",
@@ -52,8 +52,8 @@
       "provider": "zhipu-ai",
       "model": "glm-4-flash",
       "success": true,
-      "status": "OK (0.73s)",
-      "response": "Hello \ud83d\udc4b! How can I assist you"
+      "status": "OK (2.99s)",
+      "response": "Hi \ud83d\udc4b! I'm ChatGLM"
     },
     {
       "provider": "_disabled_LCMD",
@@ -88,7 +88,7 @@
       "model": "moonshotai/kimi-k2.5",
       "success": false,
       "status": "HTTP Timeout",
-      "response": "HTTPSConnectionPool(host='integrate.api.nvidia.com', port=44"
+      "response": "'NoneType' object has no attribute 'strip'"
     },
     {
       "provider": "openai-codex",
