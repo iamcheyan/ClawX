@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-16 21:11:19",
+  "generated_at": "2026-03-16 22:01:24",
   "summary": {
     "passed": 7,
     "failed": 8,
@@ -10,7 +10,7 @@
       "provider": "google",
       "model": "gemini-2.5-flash",
       "success": true,
-      "status": "OK (1.80s)",
+      "status": "OK (1.44s)",
       "response": "Response matched but unexpected format"
     },
     {
@@ -24,14 +24,14 @@
       "provider": "google-alt",
       "model": "gemini-2.5-flash",
       "success": true,
-      "status": "OK (1.55s)",
+      "status": "OK (0.80s)",
       "response": "Response matched but unexpected format"
     },
     {
       "provider": "nvidia",
       "model": "qwen/qwen2.5-coder-32b-instruct",
       "success": true,
-      "status": "OK (0.93s)",
+      "status": "OK (0.38s)",
       "response": "Hello! How can I assist you today?"
     },
     {
@@ -52,15 +52,15 @@
       "provider": "zhipu-ai",
       "model": "glm-4-flash",
       "success": true,
-      "status": "OK (0.92s)",
+      "status": "OK (1.92s)",
       "response": "Hi \ud83d\udc4b! I'm ChatGLM"
     },
     {
       "provider": "_disabled_LCMD",
       "model": "gemini-claude-sonnet-4-5",
       "success": false,
-      "status": "Spawn Timeout",
-      "response": "Took too long (>50s)"
+      "status": "Auth Failed",
+      "response": "API key rejected"
     },
     {
       "provider": "_disabled_kimi",
@@ -108,8 +108,8 @@
       "provider": "opencode",
       "model": "glm-4.7-free",
       "success": false,
-      "status": "Spawn Timeout",
-      "response": "Took too long (>50s)"
+      "status": "Auth Failed",
+      "response": "API key rejected"
     }
   ]
 }
