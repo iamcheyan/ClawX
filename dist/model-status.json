@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-16 23:01:56",
+  "generated_at": "2026-03-17 00:00:22",
   "summary": {
     "passed": 7,
     "failed": 8,
@@ -10,28 +10,28 @@
       "provider": "google",
       "model": "gemini-2.5-flash",
       "success": true,
-      "status": "OK (0.91s)",
+      "status": "OK (1.71s)",
       "response": "Response matched but unexpected format"
     },
     {
       "provider": "google",
       "model": "gemini-2.5-pro",
       "success": true,
-      "status": "OK (3.46s)",
+      "status": "OK (1.14s)",
       "response": "Response matched but unexpected format"
     },
     {
       "provider": "google-alt",
       "model": "gemini-2.5-flash",
       "success": true,
-      "status": "OK (0.79s)",
+      "status": "OK (0.84s)",
       "response": "Response matched but unexpected format"
     },
     {
       "provider": "nvidia",
       "model": "qwen/qwen2.5-coder-32b-instruct",
       "success": true,
-      "status": "OK (0.25s)",
+      "status": "OK (0.40s)",
       "response": "Hello! How can I assist you today?"
     },
     {
@@ -52,15 +52,15 @@
       "provider": "zhipu-ai",
       "model": "glm-4-flash",
       "success": true,
-      "status": "OK (2.30s)",
-      "response": "\u4f60\u597d\ud83d\udc4b\uff01\u5f88\u9ad8\u5174\u89c1\u5230\u4f60\uff0c"
+      "status": "OK (1.18s)",
+      "response": "Hi \ud83d\udc4b! I'm ChatGLM"
     },
     {
       "provider": "_disabled_LCMD",
       "model": "gemini-claude-sonnet-4-5",
       "success": false,
-      "status": "Spawn Timeout",
-      "response": "Took too long (>50s)"
+      "status": "Auth Failed",
+      "response": "API key rejected"
     },
     {
       "provider": "_disabled_kimi",
@@ -88,7 +88,7 @@
       "model": "moonshotai/kimi-k2.5",
       "success": false,
       "status": "HTTP Timeout",
-      "response": "HTTPSConnectionPool(host='integrate.api.nvidia.com', port=44"
+      "response": "'NoneType' object has no attribute 'strip'"
     },
     {
       "provider": "openai-codex",
@@ -101,15 +101,15 @@
       "provider": "opencode",
       "model": "big-pickle",
       "success": false,
-      "status": "Spawn Timeout",
-      "response": "Took too long (>50s)"
+      "status": "Auth Failed",
+      "response": "API key rejected"
     },
     {
       "provider": "opencode",
       "model": "glm-4.7-free",
       "success": false,
-      "status": "Spawn Timeout",
-      "response": "Took too long (>50s)"
+      "status": "Auth Failed",
+      "response": "API key rejected"
     }
   ]
 }
