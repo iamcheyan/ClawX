@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-21 00:00:45",
+  "generated_at": "2026-03-21 01:01:11",
   "summary": {
     "passed": 7,
     "failed": 8,
@@ -10,28 +10,28 @@
       "provider": "google",
       "model": "gemini-2.5-flash",
       "success": true,
-      "status": "OK (1.04s)",
+      "status": "OK (0.95s)",
       "response": "Response matched but unexpected format"
     },
     {
       "provider": "google",
       "model": "gemini-2.5-pro",
       "success": true,
-      "status": "OK (1.29s)",
+      "status": "OK (1.77s)",
       "response": "Response matched but unexpected format"
     },
     {
       "provider": "google-alt",
       "model": "gemini-2.5-flash",
       "success": true,
-      "status": "OK (1.04s)",
+      "status": "OK (1.09s)",
       "response": "Response matched but unexpected format"
     },
     {
       "provider": "nvidia",
       "model": "qwen/qwen2.5-coder-32b-instruct",
       "success": true,
-      "status": "OK (0.31s)",
+      "status": "OK (0.26s)",
       "response": "Hello! How can I assist you today?"
     },
     {
@@ -52,8 +52,8 @@
       "provider": "zhipu-ai",
       "model": "glm-4-flash",
       "success": true,
-      "status": "OK (0.70s)",
-      "response": "Hi there \ud83d\udc4b! I'm ChatGL"
+      "status": "OK (0.78s)",
+      "response": "Hello \ud83d\udc4b! How can I assist you"
     },
     {
       "provider": "_disabled_LCMD",
@@ -101,8 +101,8 @@
       "provider": "opencode",
       "model": "big-pickle",
       "success": false,
-      "status": "Auth Failed",
-      "response": "API key rejected"
+      "status": "Spawn Timeout",
+      "response": "Took too long (>50s)"
     },
     {
       "provider": "opencode",
