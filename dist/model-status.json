@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-04-27 10:01:01",
+  "generated_at": "2026-04-27 11:01:02",
   "summary": {
-    "passed": 6,
-    "failed": 11,
+    "passed": 5,
+    "failed": 12,
     "total": 17
   },
   "results": [
@@ -10,14 +10,14 @@
       "provider": "google",
       "model": "gemini-2.5-flash",
       "success": true,
-      "status": "OK (0.88s)",
-      "response": "Hi"
+      "status": "OK (1.06s)",
+      "response": "Response matched but unexpected format"
     },
     {
       "provider": "google",
       "model": "gemini-2.5-pro",
       "success": true,
-      "status": "OK (1.71s)",
+      "status": "OK (1.46s)",
       "response": "Response matched but unexpected format"
     },
     {
@@ -40,13 +40,6 @@
       "success": true,
       "status": "OAUTH MODE",
       "response": "Managed by OpenClaw"
-    },
-    {
-      "provider": "zhipu-ai",
-      "model": "glm-4-flash",
-      "success": true,
-      "status": "OK (1.16s)",
-      "response": "Hello \ud83d\udc4b! How can I assist you"
     },
     {
       "provider": "_disabled_LCMD",
@@ -94,8 +87,8 @@
       "provider": "nvidia",
       "model": "qwen/qwen2.5-coder-32b-instruct",
       "success": false,
-      "status": "Err 502",
-      "response": "<html>\r <head><title>502 Bad Gateway</title></head>\r <body>"
+      "status": "HTTP Timeout",
+      "response": "HTTPSConnectionPool(host='integrate.api.nvidia.com', port=44"
     },
     {
       "provider": "nvidia-kimi",
@@ -124,6 +117,13 @@
       "success": false,
       "status": "Spawn CLI Err",
       "response": "[Errno 2] No such file or directory: 'openclaw'"
+    },
+    {
+      "provider": "zhipu-ai",
+      "model": "glm-4-flash",
+      "success": false,
+      "status": "Err 429",
+      "response": "{\"error\":{\"code\":\"1305\",\"message\":\"\u8be5\u6a21\u578b\u5f53\u524d\u8bbf\u95ee\u91cf\u8fc7\u5927\uff0c\u8bf7\u60a8\u7a0d\u540e\u518d\u8bd5\"}}"
     }
   ]
 }
