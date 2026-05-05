@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-05 19:00:50",
+  "generated_at": "2026-05-05 20:01:08",
   "summary": {
     "passed": 4,
     "failed": 13,
@@ -7,11 +7,11 @@
   },
   "results": [
     {
-      "provider": "nvidia",
-      "model": "qwen/qwen2.5-coder-32b-instruct",
+      "provider": "google",
+      "model": "gemini-2.5-pro",
       "success": true,
-      "status": "OK (0.33s)",
-      "response": "Hello! How can I assist you today?"
+      "status": "OK (1.41s)",
+      "response": "Response matched but unexpected format"
     },
     {
       "provider": "qwen-portal",
@@ -31,8 +31,8 @@
       "provider": "zhipu-ai",
       "model": "glm-4-flash",
       "success": true,
-      "status": "OK (1.98s)",
-      "response": "Hi \ud83d\udc4b! I'm ChatGLM"
+      "status": "OK (1.53s)",
+      "response": "Hello \ud83d\udc4b! How can I assist you"
     },
     {
       "provider": "_disabled_LCMD",
@@ -51,13 +51,6 @@
     {
       "provider": "google",
       "model": "gemini-2.5-flash",
-      "success": false,
-      "status": "Err 503",
-      "response": "{   \"error\": {     \"code\": 503,     \"message\": \"This model i"
-    },
-    {
-      "provider": "google",
-      "model": "gemini-2.5-pro",
       "success": false,
       "status": "Err 503",
       "response": "{   \"error\": {     \"code\": 503,     \"message\": \"This model i"
@@ -96,6 +89,13 @@
       "success": false,
       "status": "Err 402",
       "response": "{\"error\":{\"message\":\"We're unable to verify your membership"
+    },
+    {
+      "provider": "nvidia",
+      "model": "qwen/qwen2.5-coder-32b-instruct",
+      "success": false,
+      "status": "HTTP Timeout",
+      "response": "HTTPSConnectionPool(host='integrate.api.nvidia.com', port=44"
     },
     {
       "provider": "nvidia-kimi",
